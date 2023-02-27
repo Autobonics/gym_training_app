@@ -52,7 +52,9 @@ class Trainer():
         self.lf_dmbl_angle = 0
         self.rt_dmbl_angle = 0
 
-    def get_frame(self) -> Optional[Tuple[int, int, bytes]]:
+        self.finish = False
+
+    def get_frame(self) -> Optional[Tuple[int, int, bytes, bool]]:
         with self.mp_pose.Pose() as pose:
             while self.cap.isOpened():
                 ret, img = self.cap.read()
@@ -70,7 +72,6 @@ class Trainer():
                         [lf_shoulder, lf_elbow, lf_wrist] = list(map(lambda lm: [lm.x, lm.y], [landmarks[lm_val.LEFT_SHOULDER.value],
                                                                                                landmarks[lm_val.LEFT_ELBOW.value],
                                                                                                landmarks[lm_val.LEFT_WRIST.value]]))
-
                         self.lf_dmbl_state, self.lf_dmbl_count, self.lf_dmbl_angle = get_dmbl_rep(
                             lf_shoulder, lf_elbow, lf_wrist, self.lf_dmbl_state, self.lf_dmbl_count)
                     except Exception as err:
@@ -87,16 +88,21 @@ class Trainer():
                     except Exception as err:
                         # print("Error detecting Right Hand \n", err)
                         pass
+                    if (self.lf_dmbl_count == 30 and self.rt_dmbl_count == 30):
+                        img = cv2.putText(
+                            img, "Successfully completed session", (350, 60))
+                        self.finish = True
+                    else:
+                        # Write Left Count
+                        img = cv2.putText(img, f"Left : {self.lf_dmbl_count},[{int(self.lf_dmbl_angle)}]", (350, 60),
+                                          cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
+                        # Write Right Count
+                        img = cv2.putText(img, f"Right : {self.rt_dmbl_count},[{int(self.rt_dmbl_angle)}]", (10, 60),
+                                          cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
+                        # encode as jpeg
 
-                    # Write Left Count
-                    img = cv2.putText(img, f"Left : {self.lf_dmbl_count},[{int(self.lf_dmbl_angle)}]", (350, 60),
-                                      cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
-                    # Write Right Count
-                    img = cv2.putText(img, f"Right : {self.rt_dmbl_count},[{int(self.rt_dmbl_angle)}]", (10, 60),
-                                      cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
-                    # encode as jpeg
                     _, img = cv2.imencode('.jpg', img)
-                    return self.lf_dmbl_count, self.rt_dmbl_count, img.tobytes()
+                    return self.lf_dmbl_count, self.rt_dmbl_count, img.tobytes(), self.finish
                 except Exception as err:
                     # print("Error : ", err)
                     pass

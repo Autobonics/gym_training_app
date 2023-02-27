@@ -8,7 +8,9 @@ def start_feed(tr: Trainer):
     while True:
         res = tr.get_frame()
         if res:
-            lf_cnt, rt_cnt, frame = res
+            lf_cnt, rt_cnt, frame, finish = res
+            if finish:
+                return
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 

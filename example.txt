@@ -1,0 +1,33 @@
+landmarks[
+    landmark{
+        x:
+        y:
+        z:
+    }....
+    landmark{
+        x:23,
+        y:21,
+        z:11
+    },
+    landmark{
+        x:2,
+        y:26,
+        z:13
+    },
+    landmark{
+        x:03,
+        y:41,
+        z:21
+    },
+    ...
+]
+
+function (landmark)->[x,y]{
+
+}
+[[23,21],[2,26],[03,41]]
+
+[
+    [23,21],
+    []
+]
