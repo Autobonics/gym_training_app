@@ -9,12 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mediapipe/camera_utils": "^0.3.1675466862",
+    "@mediapipe/drawing_utils": "^0.3.1675466124",
+    "@mediapipe/pose": "^0.5.1675469404",
+    "@types/numjs": "^0.16.2",
     "dot-env": "^0.0.1",
     "firebase": "^9.17.1",
+    "numjs": "^0.16.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
-    "react-router-dom": "^6.8.1"
+    "react-router-dom": "^6.8.1",
+    "react-webcam": "^7.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

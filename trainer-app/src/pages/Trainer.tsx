@@ -5,6 +5,7 @@ import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { SubmitInfo } from "../Types";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { Dumbell } from "../components/workout/Dumbell";
 
 export const Trainer = () => {
     const [user] = useAuthState(auth);
@@ -35,9 +36,6 @@ export const Trainer = () => {
     if (!user) {
         navigate("/");
     }
-    const trainerFeed = () => {
-        return <img src="http://localhost:5000/trainer_feed" alt="Video" />;
-    };
 
     const getInfo = () => {
         return userData ? (
@@ -50,7 +48,7 @@ export const Trainer = () => {
                         <li>BMI : {userData.bmiInfo?.bmi}</li>
                     </ul>
                 </div>
-                {feedState ? <div>{trainerFeed()}</div> : <></>}
+                {feedState ? <div>{<Dumbell/>}</div> : <></>}
                 <button
                     onClick={() => {
                         setFeed(!feedState);
@@ -58,7 +56,6 @@ export const Trainer = () => {
                 >
                     {!feedState ? "Start Trainer Feed" : "End TrainerFeed"}
                 </button>
-                <div></div>
             </>
         ) : (
             <h1>Getting User info </h1>

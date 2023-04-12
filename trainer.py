@@ -3,6 +3,7 @@ import mediapipe as mp
 import numpy as np
 from enum import Enum
 from typing import Optional, Tuple
+
 # pose documentation
 # https://google.github.io/mediapipe/solutions/pose.html
 
