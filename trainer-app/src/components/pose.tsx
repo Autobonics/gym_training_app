@@ -22,9 +22,9 @@ export interface WorkoutRes {
     finish: boolean;
 }
 export interface WorkoutArgs {
-    left_threshold?: number;
-    right_threshold?: number;
-    threshold?: number;
+    left_limit?: number;
+    right_limit?: number;
+    limit?: number;
 }
 
 export type ResCallBack<T extends WorkoutArgs, U extends WorkoutRes> = (
@@ -36,14 +36,16 @@ export type ResCallBack<T extends WorkoutArgs, U extends WorkoutRes> = (
 interface PoseProp<T extends WorkoutArgs, U extends WorkoutRes> {
     callback: ResCallBack<T, U>;
     args: T;
+    initState: U;
 }
 
 export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
     props: PoseProp<T, U>
-) => {
+): JSX.Element => {
     const camRef = useRef<Webcam>();
     const canvasRef = useRef<HTMLCanvasElement>();
-    const [wkRes, setWkRes] = useState<U>();
+    const wrkRes = useRef<U>(props.initState);
+    const [finishState, setFinish] = useState<boolean>(false);
     useEffect(() => {
         const pose = new Pose({
             locateFile: (file) =>
@@ -113,17 +115,20 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
             const res = props.callback(
                 results.poseLandmarks,
                 props.args,
-                wkRes as U
+                wrkRes.current
             );
             if (!res.finish) {
-                setWkRes(res);
+                wrkRes.current = res;
             } else {
-                console.log("Workout Over");
+                if (res.finish != finishState) {
+                    setFinish(res.finish);
+                }
             }
         }
     };
-
-    return (
+    return finishState ? (
+        <></>
+    ) : (
         <>
             <Webcam
                 ref={camRef as LegacyRef<Webcam>}

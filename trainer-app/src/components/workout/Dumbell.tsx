@@ -5,75 +5,119 @@ import {
 } from "@mediapipe/pose";
 import { WorkoutRes, WorkoutArgs, ResCallBack, PoseProc } from "../pose";
 import { proc_lm } from "../../utils/LmProc";
+import { useState } from "react";
 
 enum DumbellState {
     Up,
     Down,
     Idle,
 }
-interface DumbellRes extends WorkoutRes {
-    left_state: DumbellState;
-    right_state: DumbellState;
-    left_count: number;
-    right_count: number;
-    finish: boolean;
+interface RepRes {
+    leftState: DumbellState;
+    rightState: DumbellState;
+    leftCounter: number;
+    rightCounter: number;
 }
+interface DumbellRes extends WorkoutRes, RepRes {}
 
-export const Dumbell = () => {
-    const args = { left_threshold: 5, right_threshold: 5 };
+export const Dumbell = (): JSX.Element => {
+    const args = { left_limit: 5, right_limit: 5 };
+    const initRes: DumbellRes = {
+        leftState: DumbellState.Idle,
+        rightState: DumbellState.Idle,
+        leftCounter: 0,
+        rightCounter: 0,
+        finish: false,
+    };
     const callback: ResCallBack<WorkoutArgs, DumbellRes> = (
         res: LandmarkList,
         args: WorkoutArgs,
         curState: DumbellRes
     ): DumbellRes => {
         let finish = false;
-        if (
-            curState.left_counter &&
-            curState.right_counter &&
-            args.left_threshold &&
-            args.right_threshold
-        ) {
+        if (args?.left_limit && args?.right_limit) {
             finish =
-                curState.left_counter >= args.left_threshold &&
-                curState.right_counter >= args.right_threshold;
+                curState.leftCounter >= args?.left_limit &&
+                curState.rightCounter >= args?.right_limit;
         } else {
             finish = false;
         }
-        const [lf_count, rt_count, lf_state, rt_state] = dumbellRep(
+        const wktRes = dumbellRep(
             res,
-            curState.left_count,
-            curState.right_count,
-            curState.left_state,
-            curState.right_state
+            curState.leftCounter,
+            curState.rightCounter,
+            curState.leftState,
+            curState.rightState
         );
         return {
-            left_count: lf_count,
-            right_count: rt_count,
-            left_state: lf_state,
-            right_state: rt_state,
+            ...wktRes,
             finish: finish,
         };
     };
 
-    return <PoseProc callback={callback} args={args} />;
+    return <PoseProc callback={callback} args={args} initState={initRes} />;
 };
 
 const dumbellRep = (
     res: LandmarkList,
-    left_count: number,
-    right_count: number,
-    left_state: DumbellState,
-    right_state: DumbellState
-): [number, number, DumbellState, DumbellState] => {
+    lf_count: number,
+    rt_count: number,
+    lf_state: DumbellState,
+    rt_state: DumbellState
+): RepRes => {
     const [lf_shoulder, lf_elbow, lf_wrist] = [
         res[POSE_LANDMARKS_LEFT.LEFT_SHOULDER],
         res[POSE_LANDMARKS_LEFT.LEFT_ELBOW],
         res[POSE_LANDMARKS_LEFT.LEFT_WRIST],
     ].map(proc_lm);
+
     const [rt_shoulder, rt_elbow, rt_wrist] = [
         res[POSE_LANDMARKS_RIGHT.RIGHT_SHOULDER],
         res[POSE_LANDMARKS_RIGHT.RIGHT_ELBOW],
         res[POSE_LANDMARKS_RIGHT.RIGHT_WRIST],
     ].map(proc_lm);
-    return [left_count, right_count, left_state, right_state];
+    const [leftState, leftCount, left_angle] = getDumbellRep(
+        lf_shoulder,
+        lf_elbow,
+        lf_wrist,
+        lf_state,
+        lf_count
+    );
+    const [rightState, rightCount, right_angle] = getDumbellRep(
+        rt_shoulder,
+        rt_elbow,
+        rt_wrist,
+        rt_state,
+        rt_count
+    );
+    return {
+        leftCounter: leftCount,
+        rightCounter: rightCount,
+        leftState: leftState,
+        rightState: rightState,
+    };
+};
+
+type Angle = number;
+
+const getDumbellRep = (
+    shoulder: [number, number],
+    elbow: [number, number],
+    wrist: [number, number],
+    dumbell_state: DumbellState,
+    dumbell_count: number,
+    up_threshold = 30,
+    down_threshold = 130
+): [DumbellState, number, Angle] => {
+    const ang_rad =
+        Math.atan2(wrist[1] - elbow[1], wrist[0] - elbow[0]) -
+        Math.atan2(shoulder[1] - elbow[1], shoulder[0] - elbow[0]);
+    const angle = Math.abs((ang_rad * 180.0) / Math.PI);
+    if (angle > down_threshold) {
+        return [DumbellState.Down, dumbell_count, angle];
+    }
+    if (angle < up_threshold && dumbell_state == DumbellState.Down) {
+        return [DumbellState.Up, dumbell_count + 1, angle];
+    }
+    return [dumbell_state, dumbell_count, angle];
 };

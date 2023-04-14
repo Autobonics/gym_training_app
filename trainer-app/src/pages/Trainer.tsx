@@ -48,7 +48,7 @@ export const Trainer = () => {
                         <li>BMI : {userData.bmiInfo?.bmi}</li>
                     </ul>
                 </div>
-                {feedState ? <div>{<Dumbell/>}</div> : <></>}
+                {feedState ? <div>{<Dumbell />}</div> : <></>}
                 <button
                     onClick={() => {
                         setFeed(!feedState);
