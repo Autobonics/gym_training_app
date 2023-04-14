@@ -1,4 +1,3 @@
-./trainer/bin/activate.sh
-python main.py &
 cd ./trainer-app/
+npm i
 npm run dev
