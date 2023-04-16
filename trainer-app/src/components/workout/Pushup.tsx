@@ -4,7 +4,7 @@ import {
     POSE_LANDMARKS_LEFT,
     POSE_LANDMARKS_RIGHT,
 } from "@mediapipe/pose";
-import { proc_lm } from "../../utils/LmProc";
+import { proc_lm } from "../../utils/lmUtils";
 
 enum PushupState {
     Up,
@@ -20,6 +20,8 @@ type Landmark = [number, number];
 
 interface PushupProps {
     limit: number;
+    finishState: boolean;
+    setFinish: (newState: boolean) => void;
 }
 export const Pushup = (props: PushupProps): JSX.Element => {
     const args = { limit: props.limit };
@@ -44,6 +46,7 @@ export const Pushup = (props: PushupProps): JSX.Element => {
             curState.counter as number,
             curState.state
         );
+        props.setFinish(finish);
         return {
             ...wrkRes,
             finish: finish,

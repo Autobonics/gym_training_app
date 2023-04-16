@@ -4,7 +4,7 @@ import {
     POSE_LANDMARKS_LEFT,
     POSE_LANDMARKS_RIGHT,
 } from "@mediapipe/pose";
-import { proc_lm } from "../../utils/LmProc";
+import { proc_lm } from "../../utils/lmUtils";
 
 enum SquatState {
     Up,
@@ -22,6 +22,8 @@ interface SquatRes extends WorkoutRes, RepRes {}
 
 interface SquatProps {
     limit: number;
+    finishState: boolean;
+    setFinish: (newState: boolean) => void;
 }
 export const Squat = (props: SquatProps): JSX.Element => {
     const initRes: SquatRes = {
@@ -49,6 +51,7 @@ export const Squat = (props: SquatProps): JSX.Element => {
             curState.counter as number,
             curState.state
         );
+        props.setFinish(finish);
         return {
             ...wrkRes,
             finish,

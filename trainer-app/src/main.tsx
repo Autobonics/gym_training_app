@@ -2,7 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
+import { Info } from "./pages/Info";
 import { Trainer } from "./pages/Trainer";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const router = createBrowserRouter([
     {
@@ -12,6 +14,10 @@ const router = createBrowserRouter([
     {
         path: "home",
         element: <Home />,
+    },
+    {
+        path: "info",
+        element: <Info />,
     },
     {
         path: "trainer",

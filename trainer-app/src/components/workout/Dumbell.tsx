@@ -4,7 +4,7 @@ import {
     POSE_LANDMARKS_RIGHT,
 } from "@mediapipe/pose";
 import { WorkoutRes, WorkoutArgs, ResCallBack, PoseProc } from "../pose";
-import { proc_lm } from "../../utils/LmProc";
+import { proc_lm } from "../../utils/lmUtils";
 
 enum DumbellState {
     Up,
@@ -22,6 +22,8 @@ interface DumbellRes extends WorkoutRes, RepRes {}
 interface DumbellProp {
     leftLimit: number;
     rightLimit: number;
+    finishState: boolean;
+    setFinish: (newState: boolean) => void;
 }
 export const Dumbell = (props: DumbellProp): JSX.Element => {
     const args = { left_limit: props.leftLimit, right_limit: props.rightLimit };
@@ -57,6 +59,7 @@ export const Dumbell = (props: DumbellProp): JSX.Element => {
             curState.leftState,
             curState.rightState
         );
+        props.setFinish(finish);
         return {
             ...wktRes,
             finish: finish,

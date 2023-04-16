@@ -25,7 +25,7 @@ export const Home = () => {
         (async () => {
             const status = await checkUpload();
             if (status) {
-                navigate("/trainer");
+                navigate("/info");
             }
             setPageState(true);
         })();
@@ -61,7 +61,7 @@ export const Home = () => {
                 },
             };
             await addDoc(collection(db, "bmiInfo"), info);
-            navigate("/trainer");
+            navigate("/info");
         }
     };
 
