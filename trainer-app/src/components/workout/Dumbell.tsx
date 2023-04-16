@@ -5,7 +5,6 @@ import {
 } from "@mediapipe/pose";
 import { WorkoutRes, WorkoutArgs, ResCallBack, PoseProc } from "../pose";
 import { proc_lm } from "../../utils/LmProc";
-import { useState } from "react";
 
 enum DumbellState {
     Up,
@@ -15,8 +14,8 @@ enum DumbellState {
 interface RepRes {
     leftState: DumbellState;
     rightState: DumbellState;
-    leftCounter: number;
-    rightCounter: number;
+    leftCounter?: number;
+    rightCounter?: number;
 }
 interface DumbellRes extends WorkoutRes, RepRes {}
 
@@ -35,17 +34,22 @@ export const Dumbell = (): JSX.Element => {
         curState: DumbellRes
     ): DumbellRes => {
         let finish = false;
-        if (args?.left_limit && args?.right_limit) {
+        if (
+            args?.left_limit &&
+            args?.right_limit &&
+            curState?.leftCounter &&
+            curState?.rightCounter
+        ) {
             finish =
-                curState.leftCounter >= args?.left_limit &&
-                curState.rightCounter >= args?.right_limit;
+                curState.leftCounter >= args.left_limit &&
+                curState.rightCounter >= args.right_limit;
         } else {
             finish = false;
         }
         const wktRes = dumbellRep(
             res,
-            curState.leftCounter,
-            curState.rightCounter,
+            curState.leftCounter as number,
+            curState.rightCounter as number,
             curState.leftState,
             curState.rightState
         );
@@ -76,14 +80,14 @@ const dumbellRep = (
         res[POSE_LANDMARKS_RIGHT.RIGHT_ELBOW],
         res[POSE_LANDMARKS_RIGHT.RIGHT_WRIST],
     ].map(proc_lm);
-    const [leftState, leftCount, left_angle] = getDumbellRep(
+    const [leftState, leftCount, _left_angle] = getDumbellRep(
         lf_shoulder,
         lf_elbow,
         lf_wrist,
         lf_state,
         lf_count
     );
-    const [rightState, rightCount, right_angle] = getDumbellRep(
+    const [rightState, rightCount, _right_angle] = getDumbellRep(
         rt_shoulder,
         rt_elbow,
         rt_wrist,

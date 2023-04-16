@@ -1,5 +1,5 @@
 import Webcam from "react-webcam";
-import { useEffect, useRef, LegacyRef, useState } from "react";
+import { useEffect, useRef, LegacyRef, useState, useMemo } from "react";
 import { Camera } from "@mediapipe/camera_utils/camera_utils";
 import {
     drawConnectors,
@@ -16,8 +16,8 @@ import {
 } from "@mediapipe/pose";
 
 export interface WorkoutRes {
-    left_counter?: number;
-    right_counter?: number;
+    leftCounter?: number;
+    rightCounter?: number;
     counter?: number;
     finish: boolean;
 }
@@ -26,6 +26,10 @@ export interface WorkoutArgs {
     right_limit?: number;
     limit?: number;
 }
+
+export type ResCounter =
+    | { leftCounter: number; rightCounter: number }
+    | { counter: number };
 
 export type ResCallBack<T extends WorkoutArgs, U extends WorkoutRes> = (
     res: LandmarkList,
@@ -45,7 +49,11 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
     const camRef = useRef<Webcam>();
     const canvasRef = useRef<HTMLCanvasElement>();
     const wrkRes = useRef<U>(props.initState);
+    const [resState, setRes] = useState<U | null>(null);
     const [finishState, setFinish] = useState<boolean>(false);
+    useEffect(() => {
+        console.log("WrkRes Updated");
+    }, [wrkRes.current]);
     useEffect(() => {
         const pose = new Pose({
             locateFile: (file) =>
@@ -126,10 +134,27 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
             }
         }
     };
+    const displayCounter = (): JSX.Element => {
+        if (resState) {
+            if ("counter" in resState) {
+                return <div>Counter : {resState.counter}</div>;
+            } else if (
+                "leftCounter" in resState &&
+                "rightCounter" in resState
+            ) {
+                <>
+                    <div>LeftCounter : {resState.leftCounter}</div>
+                    <div>RightCounter : {resState.rightCounter}</div>
+                </>;
+            }
+        }
+        return <div>Workout Counter</div>;
+    };
     return finishState ? (
         <></>
     ) : (
         <>
+            <div>{displayCounter()}</div>
             <Webcam
                 ref={camRef as LegacyRef<Webcam>}
                 audio={false}
