@@ -19,8 +19,12 @@ interface RepRes {
 }
 interface DumbellRes extends WorkoutRes, RepRes {}
 
-export const Dumbell = (): JSX.Element => {
-    const args = { left_limit: 5, right_limit: 5 };
+interface DumbellProp {
+    leftLimit: number;
+    rightLimit: number;
+}
+export const Dumbell = (props: DumbellProp): JSX.Element => {
+    const args = { left_limit: props.leftLimit, right_limit: props.rightLimit };
     const initRes: DumbellRes = {
         leftState: DumbellState.Idle,
         rightState: DumbellState.Idle,
@@ -113,10 +117,10 @@ const getDumbellRep = (
     up_threshold = 30,
     down_threshold = 130
 ): [DumbellState, number, Angle] => {
-    const ang_rad =
+    const angRad =
         Math.atan2(wrist[1] - elbow[1], wrist[0] - elbow[0]) -
         Math.atan2(shoulder[1] - elbow[1], shoulder[0] - elbow[0]);
-    const angle = Math.abs((ang_rad * 180.0) / Math.PI);
+    const angle = Math.abs((angRad * 180.0) / Math.PI);
     if (angle > down_threshold) {
         return [DumbellState.Down, dumbell_count, angle];
     }

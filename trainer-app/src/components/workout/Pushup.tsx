@@ -16,9 +16,13 @@ interface RepRes {
 }
 interface PushupRes extends WorkoutRes, RepRes {}
 
-type LandMark = [number, number];
-export const Pushup = (): JSX.Element => {
-    const args = { limit: 5 };
+type Landmark = [number, number];
+
+interface PushupProps {
+    limit: number;
+}
+export const Pushup = (props: PushupProps): JSX.Element => {
+    const args = { limit: props.limit };
     const initRes: PushupRes = {
         state: PushupState.Down,
         counter: 0,
@@ -56,14 +60,14 @@ const PushupRep = (
     const downThreshold = 30;
 
     const calcAngle = (
-        shoulder: LandMark,
-        elbow: LandMark,
-        wrist: LandMark
+        shoulder: Landmark,
+        elbow: Landmark,
+        wrist: Landmark
     ): number => {
-        const ang_rad =
+        const angRad =
             Math.atan2(wrist[1] - elbow[1], wrist[0] - elbow[0]) -
             Math.atan2(shoulder[1] - elbow[1], shoulder[0] - elbow[0]);
-        return Math.abs((ang_rad * 180.0) / Math.PI);
+        return Math.abs((angRad * 180.0) / Math.PI);
     };
 
     const [lf_shoulder, lf_elbow, lf_wrist] = [

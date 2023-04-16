@@ -5,13 +5,15 @@ import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { SubmitInfo } from "../Types";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { Diet } from "../components/Diet";
 import { Dumbell } from "../components/workout/Dumbell";
 import { Pushup } from "../components/workout/Pushup";
+import { Squat } from "../components/workout/Squat";
 
 export const Trainer = () => {
     const [user] = useAuthState(auth);
     const [userData, setUserData] = useState<SubmitInfo>();
-    const [feedState, setFeed] = useState<boolean>(false);
+    const [dietState, setDiet] = useState<boolean>(false);
 
     const getUserData = async (): Promise<SubmitInfo> => {
         const ref = collection(db, "bmiInfo");
@@ -49,14 +51,13 @@ export const Trainer = () => {
                         <li>BMI : {userData.bmiInfo?.bmi}</li>
                     </ul>
                 </div>
-                {/* {feedState ? <div>{<Dumbell />}</div> : <></>} */}
-                {feedState ? <div>{<Pushup />}</div> : <></>}
+                <Diet bmi={userData.bmiInfo?.bmi} />
                 <button
                     onClick={() => {
-                        setFeed(!feedState);
+                        setDiet(!dietState);
                     }}
                 >
-                    {!feedState ? "Start Trainer Feed" : "End TrainerFeed"}
+                    {!dietState ? "Show Diet Plan" : "Hide Diet Plan"}
                 </button>
             </>
         ) : (
