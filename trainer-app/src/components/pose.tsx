@@ -48,17 +48,30 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
 ): JSX.Element => {
     const camRef = useRef<Webcam>();
     const canvasRef = useRef<HTMLCanvasElement>();
-    const wrkRes = useRef<U>(props.initState);
-    const [resState, setRes] = useState<U | null>(null);
-    const [finishState, setFinish] = useState<boolean>(false);
+    const poseRef = useRef<Pose>();
+    const [pose, setPose] = useState<Results>();
+    const [resState, setRes] = useState<U>(props.initState);
+
     useEffect(() => {
-        console.log("WrkRes Updated");
-    }, [wrkRes.current]);
+        if (!pose) {
+            return;
+        }
+        if (pose.poseLandmarks) {
+            const res = props.callback(
+                pose.poseLandmarks,
+                props.args,
+                resState
+            );
+            setRes(res);
+        }
+    }, [pose]);
+
     useEffect(() => {
         const pose = new Pose({
             locateFile: (file) =>
                 `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
         });
+        poseRef.current = pose;
         pose.setOptions({
             modelComplexity: 1,
             smoothLandmarks: true,
@@ -107,7 +120,6 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
                 canvasElement.width,
                 canvasElement.height
             );
-
             canvasCtx.globalCompositeOperation = "source-over";
             drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
                 color: "#00FF00",
@@ -119,20 +131,7 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
             });
             canvasCtx.restore();
         }
-        if (results.poseLandmarks) {
-            const res = props.callback(
-                results.poseLandmarks,
-                props.args,
-                wrkRes.current
-            );
-            if (!res.finish) {
-                wrkRes.current = res;
-            } else {
-                if (res.finish != finishState) {
-                    setFinish(res.finish);
-                }
-            }
-        }
+        setPose(results);
     };
     const displayCounter = (): JSX.Element => {
         if (resState) {
@@ -142,15 +141,17 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
                 "leftCounter" in resState &&
                 "rightCounter" in resState
             ) {
-                <>
-                    <div>LeftCounter : {resState.leftCounter}</div>
-                    <div>RightCounter : {resState.rightCounter}</div>
-                </>;
+                return (
+                    <>
+                        <div>LeftCounter : {resState.leftCounter}</div>
+                        <div>RightCounter : {resState.rightCounter}</div>
+                    </>
+                );
             }
         }
         return <div>Workout Counter</div>;
     };
-    return finishState ? (
+    return resState?.finish ? (
         <></>
     ) : (
         <>
