@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { SubmitInfo } from "../Types";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Dumbell } from "../components/workout/Dumbell";
+import { Pushup } from "../components/workout/Pushup";
 
 export const Trainer = () => {
     const [user] = useAuthState(auth);
@@ -48,7 +49,8 @@ export const Trainer = () => {
                         <li>BMI : {userData.bmiInfo?.bmi}</li>
                     </ul>
                 </div>
-                {feedState ? <div>{<Dumbell />}</div> : <></>}
+                {/* {feedState ? <div>{<Dumbell />}</div> : <></>} */}
+                {feedState ? <div>{<Pushup />}</div> : <></>}
                 <button
                     onClick={() => {
                         setFeed(!feedState);
