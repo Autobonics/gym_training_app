@@ -6,9 +6,6 @@ import { useEffect, useState } from "react";
 import { SubmitInfo } from "../Types";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Diet } from "../components/Diet";
-import { Dumbell } from "../components/workout/Dumbell";
-import { Pushup } from "../components/workout/Pushup";
-import { Squat } from "../components/workout/Squat";
 
 export const Trainer = () => {
     const [user] = useAuthState(auth);
@@ -51,7 +48,7 @@ export const Trainer = () => {
                         <li>BMI : {userData.bmiInfo?.bmi}</li>
                     </ul>
                 </div>
-                <Diet bmi={userData.bmiInfo?.bmi} />
+                {dietState ? <Diet bmi={userData.bmiInfo?.bmi} /> : <></>}
                 <button
                     onClick={() => {
                         setDiet(!dietState);
