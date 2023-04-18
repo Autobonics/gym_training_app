@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Paper } from "@mui/material";
+import Button from "@mui/material/Button";
 import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
@@ -94,7 +96,9 @@ export const Home = () => {
                 />
                 <br />
                 <br />
-                <button type="submit">Submit</button>
+                <Button variant="contained" type="submit">
+                    Submit
+                </Button>
                 <br />
                 <br />
             </form>
@@ -106,10 +110,12 @@ export const Home = () => {
     };
 
     return (
-        <>
+        <Paper>
             <h1>Welcome Home {user?.displayName}</h1>
             {getPage()}
-            <button onClick={logOut}>Sign out</button>
-        </>
+            <Button variant="outlined" onClick={logOut}>
+                Sign out
+            </Button>
+        </Paper>
     );
 };

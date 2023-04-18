@@ -2,11 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
-import { BmiCategory, SubmitInfo, WorkoutInfo } from "../Types";
+import { SubmitInfo } from "../Types";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { getCategory } from "../utils/dietUtils";
 import { WrkOut } from "../components/WrkOut";
-import { getWorkoutInfo } from "../utils/wrkUtils";
+import { Button } from "@mui/material";
 
 export const Trainer = (): JSX.Element => {
     const [user] = useAuthState(auth);
@@ -43,7 +42,9 @@ export const Trainer = (): JSX.Element => {
     return (
         <>
             {getTrainer()}
-            <button onClick={goBack}>go Back</button>
+            <Button variant="contained" onClick={goBack}>
+                go Back
+            </Button>
         </>
     );
 };

@@ -4,7 +4,8 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Info } from "./pages/Info";
 import { Trainer } from "./pages/Trainer";
-
+import { red } from "@mui/material/colors";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const router = createBrowserRouter([
     {
@@ -25,8 +26,20 @@ const router = createBrowserRouter([
     },
 ]);
 
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: red[500],
+        },
+        background: {
+            default: "#f5f5f5",
+        },
+    },
+});
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <ThemeProvider theme={theme}>
+            <RouterProvider router={router} />
+        </ThemeProvider>
     </React.StrictMode>
 );

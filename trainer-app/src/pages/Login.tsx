@@ -2,6 +2,7 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Button from "@mui/material/Button";
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -16,7 +17,9 @@ export const Login = () => {
     return (
         <>
             <h1>Login to Gym Trainer</h1>
-            <button onClick={signIn}>Sign in With google</button>
+            <Button variant="contained" onClick={signIn}>
+                Sign in With google
+            </Button>
         </>
     );
 };

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { SubmitInfo } from "../Types";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Diet } from "../components/Diet";
+import { Button } from "@mui/material";
 
 export const Info = () => {
     const [user] = useAuthState(auth);
@@ -47,20 +48,22 @@ export const Info = () => {
                     </ul>
                 </div>
                 {dietState ? <Diet bmi={userData.bmiInfo?.bmi} /> : <></>}
-                <button
+                <Button
+                    variant="contained"
                     onClick={() => {
                         setDiet(!dietState);
                     }}
                 >
                     {!dietState ? "Show Diet Plan" : "Hide Diet Plan"}
-                </button>
-                <button
+                </Button>
+                <Button
+                    variant="contained"
                     onClick={() => {
                         navigate("/trainer");
                     }}
                 >
                     Start Training
-                </button>
+                </Button>
             </>
         ) : (
             <h1>Getting User info </h1>
@@ -70,7 +73,9 @@ export const Info = () => {
     return (
         <>
             {getInfo()}
-            <button onClick={logOut}>Sign out</button>
+            <Button variant="contained" onClick={logOut}>
+                Sign out
+            </Button>
         </>
     );
 };

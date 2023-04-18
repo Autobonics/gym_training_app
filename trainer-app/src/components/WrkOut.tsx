@@ -5,6 +5,7 @@ import { Pushup } from "./workout/Pushup";
 import { Squat } from "./workout/Squat";
 import { getCategory } from "../utils/dietUtils";
 import { getWorkoutInfo } from "../utils/wrkUtils";
+import { Button } from "@mui/material";
 import shuffle from "lodash/shuffle";
 interface WrkOutProps {
     bmi: number;
@@ -30,13 +31,14 @@ export const WrkOut = (props: WrkOutProps): JSX.Element => {
         return (
             <div>
                 {days.map((day, index) => (
-                    <button
+                    <Button
+                        variant="outlined"
                         key={day}
                         onClick={() => btnClick(index)}
                         style={{ backgroundColor: btnClr(index) }}
                     >
                         {day}
-                    </button>
+                    </Button>
                 ))}
             </div>
         );

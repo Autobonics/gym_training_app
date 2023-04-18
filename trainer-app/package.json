@@ -9,9 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@mediapipe/camera_utils": "^0.3.1675466862",
     "@mediapipe/drawing_utils": "^0.3.1675466124",
     "@mediapipe/pose": "^0.5.1675469404",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.1",
     "@types/numjs": "^0.16.2",
     "dot-env": "^0.0.1",
     "firebase": "^9.17.1",
