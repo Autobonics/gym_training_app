@@ -14,6 +14,7 @@ import {
     POSE_CONNECTIONS,
     LandmarkList,
 } from "@mediapipe/pose";
+import { Typography } from "@mui/material";
 
 export interface WorkoutRes {
     leftCounter?: number;
@@ -88,8 +89,8 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
                         image: camRef.current?.video as InputImage,
                     });
                 },
-                width: 1280,
-                height: 720,
+                width: 800,
+                height: 600,
             });
             camera.start();
         }
@@ -136,16 +137,36 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
     const displayCounter = (): JSX.Element => {
         if (resState) {
             if ("counter" in resState) {
-                return <div>Counter : {resState.counter}</div>;
+                return (
+                    <Typography
+                        component="div"
+                        variant="body1"
+                        color="text.primary"
+                    >
+                        Counter : {resState.counter}
+                    </Typography>
+                );
             } else if (
                 "leftCounter" in resState &&
                 "rightCounter" in resState
             ) {
                 return (
-                    <>
-                        <div>LeftCounter : {resState.leftCounter}</div>
-                        <div>RightCounter : {resState.rightCounter}</div>
-                    </>
+                    <div>
+                        <Typography
+                            component="div"
+                            variant="body1"
+                            color="text.primary"
+                        >
+                            LeftCounter : {resState.leftCounter}
+                        </Typography>
+                        <Typography
+                            component="div"
+                            variant="body1"
+                            color="text.primary"
+                        >
+                            RightCounter : {resState.rightCounter}
+                        </Typography>
+                    </div>
                 );
             }
         }
@@ -154,38 +175,35 @@ export const PoseProc = <T extends WorkoutArgs, U extends WorkoutRes>(
     return resState?.finish ? (
         <></>
     ) : (
-        <>
+        <div
+            style={{
+                border: "1px solid white",
+            }}
+        >
             <div>{displayCounter()}</div>
             <Webcam
                 ref={camRef as LegacyRef<Webcam>}
                 audio={false}
                 mirrored={true}
                 style={{
-                    position: "absolute",
                     marginLeft: "auto",
                     marginRight: "auto",
                     left: "0",
                     right: "0",
                     textAlign: "center",
-                    zIndex: 9,
-                    width: 1280,
-                    height: 720,
+                    width: 0,
+                    height: 0,
                 }}
             />
             <canvas
                 ref={canvasRef as LegacyRef<HTMLCanvasElement>}
                 style={{
-                    position: "absolute",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    left: "0",
-                    right: "0",
+                    margin: 3,
                     textAlign: "center",
-                    zIndex: 9,
-                    width: 1280,
-                    height: 720,
+                    width: 800,
+                    height: 600,
                 }}
             />
-        </>
+        </div>
     );
 };

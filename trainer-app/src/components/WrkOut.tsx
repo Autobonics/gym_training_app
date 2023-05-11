@@ -5,7 +5,7 @@ import { Pushup } from "./workout/Pushup";
 import { Squat } from "./workout/Squat";
 import { getCategory } from "../utils/dietUtils";
 import { getWorkoutInfo } from "../utils/wrkUtils";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import shuffle from "lodash/shuffle";
 interface WrkOutProps {
     bmi: number;
@@ -22,20 +22,30 @@ const days = [
 
 export const WrkOut = (props: WrkOutProps): JSX.Element => {
     const [selectDay, setDay] = useState(new Date().getDay());
-    const btnClr = (index: number): string =>
-        index == selectDay ? "cyan" : "white";
+    const btnClr = (index: number): React.CSSProperties =>
+        index == selectDay
+            ? { color:"#040001",backgroundColor: "#7C1FC4" }
+            : { backgroundColor: "#040001" };
     const btnClick = (index: number) => {
         setDay(index);
     };
     const displayDate = (): JSX.Element => {
         return (
-            <div>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 5,
+                    marginTop: "20px",
+                    marginBottom: 0,
+                }}
+            >
                 {days.map((day, index) => (
                     <Button
                         variant="outlined"
                         key={day}
                         onClick={() => btnClick(index)}
-                        style={{ backgroundColor: btnClr(index) }}
+                        style={btnClr(index)}
                     >
                         {day}
                     </Button>
@@ -128,27 +138,79 @@ const InitWorkout = (props: InitProps): JSX.Element => {
                 break;
         }
         return (
-            <div>
-                {desc}
+            <>
+                <Typography
+                    component="div"
+                    variant="body1"
+                    color="text.primary"
+                >
+                    {desc}
+                </Typography>
                 {weight ? (
-                    <div>{`Holding a Weight of ${weight}.lb`}</div>
+                    <Typography
+                        component="div"
+                        variant="body1"
+                        color="text.primary"
+                    >
+                        {`Holding a Weight of ${weight}.lb`}
+                    </Typography>
                 ) : (
                     <></>
                 )}
-            </div>
+            </>
         );
     };
     return (
         <>
-            <div>
-                {wrkDesc(
-                    props.wrkList[curWrkout].wrkCategory,
-                    props.wrkList[curWrkout].weight
-                )}
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 150,
+                    marginTop: 10,
+                }}
+            >
+                <div
+                    style={{
+                        border: "1px solid white",
+                        padding: 10,
+                    }}
+                >
+                    {wrkDesc(
+                        props.wrkList[curWrkout].wrkCategory,
+                        props.wrkList[curWrkout].weight
+                    )}
+                    <img
+                        src={getWrkImg(props.wrkList[curWrkout].wrkCategory)}
+                        style={{
+                            maxWidth: 400,
+                            maxHeight: 600,
+                        }}
+                    />
+                </div>
+                {wrkOut}
             </div>
-            {wrkOut}
         </>
     );
+};
+
+const getWrkImg = (category: WorkoutCategory): string => {
+    let res = "/images/workout/default.gif";
+    switch (category) {
+        case WorkoutCategory.Dumbell: {
+            res = "/images/workout/dumbell.gif";
+            break;
+        }
+        case WorkoutCategory.Pushup: {
+            res = "/images/workout/pushup.gif";
+            break;
+        }
+        case WorkoutCategory.Squats: {
+            res = "/images/workout/squats.gif";
+            break;
+        }
+    }
+    return res;
 };
 
 const getDailyWrks = (day: number, bmi: number): Array<Workout> => {

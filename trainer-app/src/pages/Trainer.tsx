@@ -42,7 +42,15 @@ export const Trainer = (): JSX.Element => {
     return (
         <>
             {getTrainer()}
-            <Button variant="contained" onClick={goBack}>
+            <Button
+                variant="contained"
+                onClick={goBack}
+                style={{
+                    position: "absolute",
+                    top: "2%",
+                    left: "80%",
+                }}
+            >
                 go Back
             </Button>
         </>

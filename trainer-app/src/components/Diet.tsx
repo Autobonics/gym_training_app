@@ -29,50 +29,32 @@ interface FoodTableProps {
 }
 const FoodTable = (props: FoodTableProps): JSX.Element => {
     return (
-        <Paper sx={{ backgroundColor: "grey.200" }}>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Typography>{props.time} Food:</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="right">Food</TableCell>
-                                    <TableCell align="right">
-                                        Calories
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {props.food.map(([food, calories]) => (
-                                    <TableRow
-                                        key={food}
-                                        sx={{
-                                            "&:last-child td, &:last-child th":
-                                                {
-                                                    border: 0,
-                                                },
-                                        }}
-                                    >
-                                        <TableCell align="right">
-                                            {food}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {calories}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </AccordionDetails>
-            </Accordion>
+        <Paper sx={{ backgroundColor: "#1A1320", maxWidth: "400px" }}>
+            <TableContainer component={Paper}>
+                <Table sx={{ maxWidth: "400px",backgroundColor:"#1A1320" ,border:'1px solid #7C1FC4'}} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="right">Food</TableCell>
+                            <TableCell align="right">Calories</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {props.food.map(([food, calories]) => (
+                            <TableRow
+                                key={food}
+                                sx={{
+                                    "&:last-child td, &:last-child th": {
+                                        border: 0,
+                                    },
+                                }}
+                            >
+                                <TableCell align="right">{food}</TableCell>
+                                <TableCell align="right">{calories}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Paper>
     );
 };
@@ -85,8 +67,9 @@ const getDietPlan = (bmi: number): JSX.Element => {
             <div
                 style={{
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: "row",
                     gap: "20px",
+                    margin: "20px",
                 }}
             >
                 <FoodTable time="Morning" food={dietPlan.morning} />

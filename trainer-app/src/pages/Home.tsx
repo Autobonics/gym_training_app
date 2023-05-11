@@ -105,7 +105,7 @@ export const Home = () => {
         );
     };
 
-    const getPage = () => {
+    const getPage = (): JSX.Element => {
         return pageState ? bmiForm() : <h1>Loading Please wait</h1>;
     };
 

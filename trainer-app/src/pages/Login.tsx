@@ -2,8 +2,10 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Button from "@mui/material/Button";
-
+import TrainerText from "/images/login/trainer.svg";
+import AiText from "/images/login/ai.svg";
+import SigninText from "/images/login/signin.svg";
+import "./styles.css";
 export const Login = () => {
     const navigate = useNavigate();
     const [user] = useAuthState(auth);
@@ -15,11 +17,36 @@ export const Login = () => {
         navigate("/home");
     }
     return (
-        <>
-            <h1>Login to Gym Trainer</h1>
-            <Button variant="contained" onClick={signIn}>
-                Sign in With google
-            </Button>
-        </>
+        <div>
+            <img
+                src={AiText}
+                style={{
+                    position: "absolute",
+                    top: "35%",
+                    left: "25%",
+                }}
+            />
+            <img
+                src={TrainerText}
+                style={{
+                    position: "absolute",
+                    top: "35%",
+                    left: "60%",
+                }}
+            />
+            <button
+                onClick={signIn}
+                style={{
+                    position: "absolute",
+                    top: "90%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    background: "none",
+                    border: "none",
+                }}
+            >
+                <img src={SigninText} />
+            </button>
+        </div>
     );
 };
