@@ -57,8 +57,8 @@ export const Info = () => {
                 sx={{
                     display: "flex",
                     flexDirection: "column",
-                    gap:5,
-                    margin:5
+                    gap: 5,
+                    margin: 5,
                 }}
             >
                 <Card
@@ -110,7 +110,8 @@ export const Info = () => {
                                             variant="body1"
                                             color="text.primary"
                                         >
-                                            Weight : {userData.bmiInfo?.weight}
+                                            Weight : {userData.bmiInfo?.weight}{" "}
+                                            kg
                                         </Typography>
                                     }
                                 />
@@ -121,7 +122,8 @@ export const Info = () => {
                                             variant="body1"
                                             color="text.primary"
                                         >
-                                            Height : {userData.bmiInfo?.height}
+                                            Height : {userData.bmiInfo?.height}{" "}
+                                            m
                                         </Typography>
                                     }
                                 />
@@ -132,7 +134,8 @@ export const Info = () => {
                                             variant="body1"
                                             color="text.primary"
                                         >
-                                            BMI : {userData.bmiInfo?.bmi}
+                                            BMI :{" "}
+                                            {userData.bmiInfo?.bmi?.toFixed(2)}
                                         </Typography>
                                     }
                                 />

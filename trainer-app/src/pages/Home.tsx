@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Paper } from "@mui/material";
-import Button from "@mui/material/Button";
+import { Button, InputLabel, OutlinedInput } from "@mui/material";
 import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
@@ -69,11 +69,35 @@ export const Home = () => {
 
     const bmiForm = () => {
         return (
-            <form onSubmit={(e) => uploadBmi(e)}>
-                <input
-                    type="number"
-                    step="any"
-                    placeholder="height in m"
+            <form
+                onSubmit={(e) => uploadBmi(e)}
+                style={{
+                    backgroundColor: "transparent",
+                    border: "2px solid #fff",
+                    padding: "1rem",
+                    display: "inline-block",
+                    width: "fit-content",
+                }}
+            >
+                <InputLabel
+                    htmlFor="height-input"
+                    shrink
+                    style={{ color: "#fff" }}
+                >
+                    Height in m
+                </InputLabel>
+                <br />
+                <OutlinedInput
+                    id="height-input"
+                    type="float"
+                    inputProps={{ step: 0.1 }}
+                    style={{
+                        backgroundColor: "#000",
+                        borderRadius: "5px",
+                        padding: "5px",
+                        color: "text.secondary",
+                        border: "1px solid #fff",
+                    }}
                     onChange={(e) => {
                         setBmiInfo({
                             ...bmiInfo,
@@ -83,10 +107,25 @@ export const Home = () => {
                 />
                 <br />
                 <br />
-                <input
+                <InputLabel
+                    htmlFor="weight-input"
+                    shrink
+                    style={{ color: "#fff" }}
+                >
+                    Weight in kg
+                </InputLabel>
+                <br />
+                <OutlinedInput
+                    id="weight-input"
                     type="number"
-                    step="any"
-                    placeholder="weight in kg"
+                    inputProps={{ step: 0.1 }}
+                    style={{
+                        backgroundColor: "#000",
+                        borderRadius: "5px",
+                        padding: "5px",
+                        color: "text.secondary",
+                        border: "1px solid #fff",
+                    }}
                     onChange={(e) => {
                         setBmiInfo({
                             ...bmiInfo,
@@ -110,10 +149,24 @@ export const Home = () => {
     };
 
     return (
-        <Paper>
+        <Paper
+            style={{
+                backgroundColor: "transparent",
+                display: "flex",
+                flexDirection: "column",
+                gap: 20,
+                alignItems: "center",
+                maxWidth: "fit-content",
+                margin: "auto",
+            }}
+        >
             <h1>Welcome Home {user?.displayName}</h1>
             {getPage()}
-            <Button variant="outlined" onClick={logOut}>
+            <Button
+                variant="outlined"
+                onClick={logOut}
+                style={{ borderColor: "#fff" }}
+            >
                 Sign out
             </Button>
         </Paper>
