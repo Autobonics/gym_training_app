@@ -31,15 +31,23 @@ const FoodTable = (props: FoodTableProps): JSX.Element => {
     return (
         <Paper sx={{ backgroundColor: "#1A1320", maxWidth: "400px" }}>
             <TableContainer component={Paper}>
-                <Table sx={{ maxWidth: "400px",backgroundColor:"#1A1320" ,border:'1px solid #7C1FC4'}} aria-label="simple table">
+                <Table
+                    sx={{
+                        maxWidth: "400px",
+                        backgroundColor: "#1A1320",
+                        border: "1px solid #7C1FC4",
+                    }}
+                    aria-label="simple table"
+                >
                     <TableHead>
                         <TableRow>
                             <TableCell align="right">Food</TableCell>
                             <TableCell align="right">Calories</TableCell>
+                            <TableCell align="right">Image</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.food.map(([food, calories]) => (
+                        {props.food.map(([food, calories, foodImg]) => (
                             <TableRow
                                 key={food}
                                 sx={{
@@ -50,6 +58,9 @@ const FoodTable = (props: FoodTableProps): JSX.Element => {
                             >
                                 <TableCell align="right">{food}</TableCell>
                                 <TableCell align="right">{calories}</TableCell>
+                                <TableCell align="right">
+                                    <img src={foodImg} alt={food} width={40} />
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -60,7 +71,7 @@ const FoodTable = (props: FoodTableProps): JSX.Element => {
 };
 const getDietPlan = (bmi: number): JSX.Element => {
     const BmiCategory: BmiCategory = getCategory(bmi);
-    const dietPlan: DietPlan = getPlan(BmiCategory);
+    const dietPlan: DietPlan = getPlan(BmiCategory) as DietPlan;
     return (
         <div>
             <h2>Diet Plan</h2>

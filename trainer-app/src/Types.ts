@@ -17,7 +17,8 @@ export enum BmiCategory {
 }
 
 export type Calorie = number;
-export type Food = [string, Calorie];
+export type FoodImg = string;
+export type Food = [string, Calorie, FoodImg];
 
 export interface DietPlan {
     morning: Array<Food>;
