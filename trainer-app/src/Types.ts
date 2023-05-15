@@ -41,4 +41,5 @@ export interface Workout {
     weight?: number;
     sets: number;
     reps: number;
+    cal:number;
 }

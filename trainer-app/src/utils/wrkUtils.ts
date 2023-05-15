@@ -11,17 +11,20 @@ export const getWorkoutInfo = (category: BmiCategory): WorkoutInfo => {
                         weight: 20,
                         sets: 3,
                         reps: 12,
+                        cal: 12,
                     },
                     {
                         wrkCategory: WorkoutCategory.Pushup,
                         sets: 3,
                         reps: 12,
+                        cal: 14,
                     },
                     {
                         wrkCategory: WorkoutCategory.Dumbell,
                         weight: 10,
                         sets: 3,
                         reps: 12,
+                        cal: 13,
                     },
                 ],
             };
@@ -34,17 +37,20 @@ export const getWorkoutInfo = (category: BmiCategory): WorkoutInfo => {
                         weight: 30,
                         sets: 3,
                         reps: 12,
+                        cal: 15
                     },
                     {
                         wrkCategory: WorkoutCategory.Pushup,
                         sets: 3,
                         reps: 12,
+                        cal: 12
                     },
                     {
                         wrkCategory: WorkoutCategory.Dumbell,
                         weight: 15,
                         sets: 3,
                         reps: 12,
+                        cal: 14,
                     },
                 ],
             };
@@ -57,17 +63,20 @@ export const getWorkoutInfo = (category: BmiCategory): WorkoutInfo => {
                         weight: 40,
                         sets: 2,
                         reps: 15,
+                        cal: 12,
                     },
                     {
                         wrkCategory: WorkoutCategory.Pushup,
                         sets: 2,
                         reps: 15,
+                        cal: 10,
                     },
                     {
                         wrkCategory: WorkoutCategory.Dumbell,
                         weight: 20,
                         sets: 2,
                         reps: 15,
+                        cal: 16,
                     },
                 ],
             };
@@ -80,17 +89,20 @@ export const getWorkoutInfo = (category: BmiCategory): WorkoutInfo => {
                         weight: 20,
                         sets: 2,
                         reps: 12,
+                        cal: 11,
                     },
                     {
                         wrkCategory: WorkoutCategory.Pushup,
                         sets: 2,
                         reps: 12,
+                        cal: 10,
                     },
                     {
                         wrkCategory: WorkoutCategory.Dumbell,
                         weight: 10,
                         sets: 2,
                         reps: 12,
+                        cal: 13,
                     },
                 ],
             };

@@ -24,7 +24,7 @@ export const WrkOut = (props: WrkOutProps): JSX.Element => {
     const [selectDay, setDay] = useState(new Date().getDay());
     const btnClr = (index: number): React.CSSProperties =>
         index == selectDay
-            ? { color:"#040001",backgroundColor: "#7C1FC4" }
+            ? { color: "#040001", backgroundColor: "#7C1FC4" }
             : { backgroundColor: "#040001" };
     const btnClick = (index: number) => {
         setDay(index);
@@ -123,7 +123,8 @@ const InitWorkout = (props: InitProps): JSX.Element => {
     );
     const wrkDesc = (
         category: WorkoutCategory,
-        weight: number | undefined
+        weight: number | undefined,
+        cal: number
     ): JSX.Element => {
         let desc: string = "";
         switch (category) {
@@ -157,6 +158,13 @@ const InitWorkout = (props: InitProps): JSX.Element => {
                 ) : (
                     <></>
                 )}
+                <Typography
+                    component="div"
+                    variant="body1"
+                    color="text.primary"
+                >
+                    You will burn {cal} calories after this workout
+                </Typography>
             </>
         );
     };
@@ -178,7 +186,8 @@ const InitWorkout = (props: InitProps): JSX.Element => {
                 >
                     {wrkDesc(
                         props.wrkList[curWrkout].wrkCategory,
-                        props.wrkList[curWrkout].weight
+                        props.wrkList[curWrkout].weight,
+                        props.wrkList[curWrkout].cal
                     )}
                     <img
                         src={getWrkImg(props.wrkList[curWrkout].wrkCategory)}
