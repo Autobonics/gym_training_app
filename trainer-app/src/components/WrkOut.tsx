@@ -108,7 +108,7 @@ const dailyWorkout = (day: number, bmi: number): JSX.Element => {
             variant="body1"
             color="text.primary"
         >
-            WorkOut Completed.
+            Daily WorkOut Completed.
         </Typography>
     }
 
