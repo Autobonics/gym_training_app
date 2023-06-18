@@ -100,7 +100,19 @@ const startWorkout = (
 
 const dailyWorkout = (day: number, bmi: number): JSX.Element => {
     const dailyWrks: Array<Workout> = getDailyWrks(day, bmi);
-    return <InitWorkout wrkList={dailyWrks} />;
+    try {
+        return <InitWorkout wrkList={dailyWrks} />;
+    } catch {
+        return <Typography
+            component="div"
+            variant="body1"
+            color="text.primary"
+        >
+            WorkOut Completed.
+        </Typography>
+    }
+
+
 };
 interface InitProps {
     wrkList: Array<Workout>;
